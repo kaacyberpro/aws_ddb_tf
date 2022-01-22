@@ -45,5 +45,5 @@ jobs:
 
       # Runs terraform apply
       - name: terraform apply
-        run: terraform apply -target module.aws_dynamodb
+        run: terraform apply -auto-approve -target module.aws_dynamodb
 
