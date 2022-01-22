@@ -3,23 +3,9 @@ variable "profile" {
   type    = string
   default = "default"
 }
-variable "instance_type" {
-  type    = string
-  default = "t2.micro"
-}
 variable "instance_region" {
   type    = string
   default = "us-east-1"
-}
-# variable "vpc_security_group_ids" {
-
-# }
-# variable "subnet_id" {
-  
-# }
-variable "env_tag" {
-  type    = string
-  default = "cicd"
 }
 
 ################################|################################|################################|################################
@@ -60,61 +46,6 @@ resource "aws_key_pair" "key_pub" {
 }
 
 ################################|################################|################################|################################
-module "network_im" {
-  #source = "e:\\!projects\\devops\\improject\\init\\modules\\aws_network"
-  source            = "./modules/aws_network"
-  providers         = { aws.prov = aws.instance_region }
-  vpc_cidr_block    = "10.0.0.0/16"
-  subnet_cidr_block = "10.0.2.0/24"
-  env_tag           = "improject"
-}
-
-################################|################################|################################|################################
-module "env_cicd" {
-  source                 = "./modules/aws_instance_cicd"
-  providers              = { aws.prov = aws.instance_region }
-  instance_type          = var.instance_type
-  instance_region        = var.instance_region
-  key_name               = aws_key_pair.key_pub.key_name
-  vpc_security_group_ids = "${module.network_im.vpc_security_group_ids}"
-  subnet_id              = "${module.network_im.subnet_id}"
-  env_tag                = "cicd"
-  priv_ip                = "10.0.2.10"
-
-  depends_on = [module.network_im.vpc_security_group_ids]
-}
-
-module "env_dev" {
-  source            = "./modules/aws_instance"
-  providers         = { aws.prov = aws.instance_region }
-  instance_type          = "t2.large"
-#  instance_type          = var.instance_type
-  instance_region        = var.instance_region
-  key_name               = aws_key_pair.key_pub.key_name
-  vpc_security_group_ids = "${module.network_im.vpc_security_group_ids}"
-  subnet_id              = "${module.network_im.subnet_id}"
-  env_tag                = "dev"
-  priv_ip                = "10.0.2.20"
-
-  depends_on = [module.network_im.vpc_security_group_ids]
-}
-
-module "env_prod" {
-  source            = "./modules/aws_instance"
-  providers         = { aws.prov = aws.instance_region }
-  instance_type          = "t2.large"
-#  instance_type          = var.instance_type
-  instance_region        = var.instance_region
-  key_name               = aws_key_pair.key_pub.key_name
-  vpc_security_group_ids = "${module.network_im.vpc_security_group_ids}"
-  subnet_id              = "${module.network_im.subnet_id}"
-  env_tag                = "prod"
-  priv_ip                = "10.0.2.30"
-
-  depends_on = [module.network_im.vpc_security_group_ids]
-}
-
-
 module "aws_dynamodb"{
   providers         = { aws.prov = aws.instance_region }
   
@@ -175,44 +106,9 @@ module "aws_dynamodb"{
       ddb_tags_name        = "ddb_name"                      #
       ddb_tags_env         = "test_env"                      #
 #  }
-
-
 }
 
 ################################|################################|################################|################################
-output "Intstance-env_cicd-name" {
-  value = module.env_cicd.Intstance-name
-}
-output "Intstance-env_cicd-Public-IP" {
-  value = module.env_cicd.Intstance-Public-IP
-}
-output "Intstance-env_cicd-Private-IP" {
-  value = module.env_cicd.Intstance-Private-IP
-}
-
-################################|
-output "Intstance-env_dev-name" {
-  value = module.env_dev.Intstance-name
-}
-output "Intstance-env_dev-Public-IP" {
-  value = module.env_dev.Intstance-Public-IP
-}
-output "Intstance-env_dev-Private-IP" {
-  value = module.env_dev.Intstance-Private-IP
-}
-
-################################|
-output "Intstance-env_prod-name" {
-  value = module.env_prod.Intstance-name
-}
-output "Intstance-env_prod-Public-IP" {
-  value = module.env_prod.Intstance-Public-IP
-}
-output "Intstance-env_prod-Private-IP" {
-  value = module.env_prod.Intstance-Private-IP
-}
-
-################################|
 output "ddb_table_arn" {
     description = "arn - The arn of the table"
     value = module.aws_dynamodb.ddb_table_arn
