@@ -25,6 +25,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      # Runs terraform apply
+      - name: list workdir
+        run: |
+          pwd
+          ls -la
+
       # Runs a single command using the runners shell
       - name: config AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -33,7 +39,7 @@ jobs:
           aws-secret-access-key : ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region            : us-east-2
 
-      # Runs a set of commands using the runners shell
+      # Runs terraform apply
       - name: Run a multi-line script
         run: terraform apply -target module.aws_dynamodb
 
