@@ -33,18 +33,6 @@ provider "aws" {
   alias   = "instance_region"
 }
 
-
-#Please note that this code expects SSH key pair to exist in default dir under 
-#users home directory, otherwise it will fail
-
-#Create key-pair for logging into EC2 in us-east-1
-resource "aws_key_pair" "key_pub" {
-  provider = aws.instance_region
-  key_name = "instance"
-#  public_key = file("~/.ssh/id_rsa.pub")
-  public_key = file("id_rsa.pub")
-}
-
 ################################|################################|################################|################################
 module "aws_dynamodb"{
   providers         = { aws.prov = aws.instance_region }
