@@ -49,7 +49,7 @@ resource "aws_key_pair" "key_pub" {
 module "aws_dynamodb"{
   providers         = { aws.prov = aws.instance_region }
   
-  source            = "./modules/aws_dynamodb"
+  source            = "modules/aws_dynamodb"
 
   ddb_name           = "example-1"                      # name - (Required) The name of the table, this needs to be unique within a region.
   ddb_billing_mode   = "PROVISIONED"                    # billing_mode - (Optional) Controls how you are charged for read and write throughput and how you manage capacity. The valid values are PROVISIONED and PAY_PER_REQUEST. Defaults to PROVISIONED.
