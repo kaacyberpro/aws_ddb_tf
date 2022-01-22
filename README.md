@@ -2,4 +2,4 @@
 Module to deploy AWS dynamo dB with terraform
 
 Status of latest deployment :<br>
-<img src="https://github.com/kaacyberpro/aws_ddb_tf/testing-actions/workflows/deply_aws_dynamo_db/badge.svg&branch=master"><br>
+<img src="https://github.com/kaacyberpro/aws_ddb_tf/workflows/deply_aws_dynamo_db/badge.svg&branch=master"><br>
